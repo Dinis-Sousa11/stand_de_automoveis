@@ -49,9 +49,7 @@ Um pequeno projeto em Python que simula um stand de carros JDM (Japanese Domesti
 ## 📦 Instalação
 
 ```bash
-git clone https://github.com/Dinis-Sousa11/stand_de_automoveis.git
-cd stand_de_automoveis/src
-pip install colorama
+cd src
 python main.py
 ```
 
