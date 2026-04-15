@@ -1,6 +1,3 @@
-Ya, tens razão — assim fica meio “paredão de texto”. Bora meter isso com badges estilo pro 🔥
-
-Aqui tens uma versão melhorada do teu README já com badges:
 
 ---
 
