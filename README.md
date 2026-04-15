@@ -22,7 +22,7 @@ Python 3
 Biblioteca colorama (para cores no terminal)
 📦 Instalação
 Clona o repositório:
-git clone https://github.com/teu-username/stand-jdm.git
+git clone https://github.com/teu-username/stand_de_automoveis.git
 cd stand-jdm
 Instala as dependências:
 pip install colorama
