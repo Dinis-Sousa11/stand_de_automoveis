@@ -1,62 +1,112 @@
-🚗 Stand JDM - Sistema de Gestão (CLI)
+Ya, tens razão — assim fica meio “paredão de texto”. Bora meter isso com badges estilo pro 🔥
+
+Aqui tens uma versão melhorada do teu README já com badges:
+
+---
+
+# 🚗 Stand JDM - Sistema de Gestão (CLI)
+
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Platform](https://img.shields.io/badge/platform-CLI-lightgrey)
+
+---
+
+## 📌 Descrição
 
 Um pequeno projeto em Python que simula um stand de carros JDM (Japanese Domestic Market), com sistema de clientes, compra de veículos e gestão de saldo — tudo através do terminal.
 
-📌 Funcionalidades
-🔐 Sistema de login e registo de clientes
-💰 Gestão de saldo
-🚘 Visualização de stock de carros
-🛒 Compra de veículos
-👤 Perfil do utilizador
-✏️ Edição de dados do cliente
-❌ Remoção de conta
-🧠 Estrutura do Projeto
+---
 
-O projeto está dividido em 3 módulos principais:
+## 🚀 Funcionalidades
 
-main.py → Interface principal e navegação (menus, login, etc.)
-carros.py → Gestão do stock e compras de carros
-cliente.py → Gestão dos clientes (CRUD)
-🛠️ Tecnologias Utilizadas
-Python 3
-Biblioteca colorama (para cores no terminal)
-📦 Instalação
-Clona o repositório:
-git clone https://github.com/teu-username/stand_de_automoveis.git
-cd stand-jdm
-Instala as dependências:
+* 🔐 Sistema de login e registo de clientes
+* 💰 Gestão de saldo
+* 🚘 Visualização de stock de carros
+* 🛒 Compra de veículos
+* 👤 Perfil do utilizador
+* ✏️ Edição de dados do cliente
+* ❌ Remoção de conta
+
+---
+
+## 🧠 Estrutura do Projeto
+
+```
+📁 src/
+ ├── main.py       # Interface principal
+ ├── carros.py     # Gestão de stock
+ └── cliente.py    # Gestão de clientes
+```
+
+---
+
+## 🛠️ Tecnologias
+
+* Python 3
+* colorama (cores no terminal)
+
+---
+
+## 📦 Instalação
+
+```bash
+git clone https://github.com/Dinis-Sousa11/stand_de_automoveis.git
+cd stand_de_automoveis/src
 pip install colorama
-Executa o programa:
 python main.py
-🎮 Como Usar
-Inicia o programa
-Cria uma conta ou faz login
-Navega pelo menu:
-Ver stock
-Comprar carros
-Adicionar saldo
-Ver/editar perfil
-🚗 Carros Disponíveis
+```
 
-O sistema inclui alguns clássicos JDM:
+---
 
-Nissan Skyline R34
-Toyota Supra MK4
-Mazda RX-7 FD
-Honda NSX
-Mitsubishi Lancer Evo IX
-Subaru Impreza 22B
-Nissan Silvia S15
-Toyota AE86 Trueno
-⚠️ Notas
-Os dados são guardados apenas em memória (não persistem após fechar o programa)
-Ideal para aprendizagem de Python e conceitos como:
-Estruturas de dados
-Modularização
-CRUD
-Interação com utilizador
-💡 Melhorias Futuras
-💾 Guardar dados em ficheiro (JSON ou base de dados)
-🔑 Sistema de autenticação mais seguro
-🖥️ Interface gráfica (Tkinter ou Web)
-📊 Histórico de compras
+## 🎮 Como Usar
+
+1. Executa o programa
+2. Cria conta ou faz login
+3. Usa o menu para:
+
+   * Ver stock
+   * Comprar carros
+   * Adicionar saldo
+   * Gerir perfil
+
+---
+
+## 🚗 Carros Disponíveis
+
+* Nissan Skyline R34
+* Toyota Supra MK4
+* Mazda RX-7 FD
+* Honda NSX
+* Mitsubishi Lancer Evo IX
+* Subaru Impreza 22B
+* Nissan Silvia S15
+* Toyota AE86 Trueno
+
+---
+
+## ⚠️ Notas
+
+* Dados não são guardados permanentemente (reset ao fechar)
+* Projeto focado em aprendizagem de:
+
+  * CRUD
+  * Estruturas de dados
+  * Modularização
+
+---
+
+## 💡 Melhorias Futuras
+
+* 💾 Guardar dados em ficheiro (JSON ou DB)
+* 🔑 Autenticação mais segura
+* 🖥️ Interface gráfica
+* 📊 Histórico de compras
+
+---
+
+## 👤 Autor
+
+Feito por **Dinis Sousa**
+
