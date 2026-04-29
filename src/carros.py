@@ -1,25 +1,28 @@
 from datetime import datetime
 
 carros = [
-    (("AA-00-BB", "Nissan", "Skyline R34", 1999, 85000.0, 62000, "Cinzento"), {"id_dono": None}),
-    (("BB-11-CC", "Toyota", "Supra MK4", 1997, 120000.0, 45000, "Laranja"), {"id_dono": None}),
-    (("CC-22-DD", "Mazda", "RX-7 FD", 1995, 55000.0, 78000, "Vermelho"), {"id_dono": None}),
-    (("DD-33-EE", "Honda", "NSX", 2001, 95000.0, 33000, "Preto"), {"id_dono": None}),
-    (("EE-44-FF", "Mitsubishi", "Lancer Evo IX", 2006, 45000.0, 89000, "Branco"), {"id_dono": None}),
-    (("FF-55-GG", "Subaru", "Impreza 22B", 1998, 150000.0, 20000, "Azul"), {"id_dono": None}),
-    (("GG-66-HH", "Nissan", "Silvia S15", 2002, 35000.0, 110000, "Amarelo"), {"id_dono": None}),
-    (("HH-77-II", "Toyota", "AE86 Trueno", 1986, 30000.0, 150000, "Branco/Preto"), {"id_dono": None})
+    (("AA-00-BB", "Nissan", "Skyline R34", 1999, 85000.0, 62000, "Cinzento", "RWD", 2, 2.6, 280, 4, "S001", "F001"), {"id_dono": None, "data_registo": "2024-01-10 00:00:00"}),
+    (("BB-11-CC", "Toyota", "Supra MK4", 1997, 120000.0, 45000, "Laranja", "RWD", 2, 3.0, 320, 4, "S001", "F001"), {"id_dono": None, "data_registo": "2024-01-12 00:00:00"}),
+    (("CC-22-DD", "Mazda", "RX-7 FD", 1995, 55000.0, 78000, "Vermelho", "RWD", 2, 1.3, 255, 4, "S002", "F002"), {"id_dono": None, "data_registo": "2024-02-01 00:00:00"}),
+    (("DD-33-EE", "Honda", "NSX", 2001, 95000.0, 33000, "Preto", "RWD", 2, 3.2, 290, 2, "S002", "F002"), {"id_dono": None, "data_registo": "2024-02-15 00:00:00"}),
+    (("EE-44-FF", "Mitsubishi", "Lancer Evo IX", 2006, 45000.0, 89000, "Branco", "4WD", 4, 2.0, 280, 5, "S001", "F003"), {"id_dono": None, "data_registo": "2024-03-01 00:00:00"}),
+    (("FF-55-GG", "Subaru", "Impreza 22B", 1998, 150000.0, 20000, "Azul", "4WD", 2, 2.0, 280, 4, "S003", "F001"), {"id_dono": None, "data_registo": "2024-03-10 00:00:00"}),
+    (("GG-66-HH", "Nissan", "Silvia S15", 2002, 35000.0, 110000, "Amarelo", "RWD", 2, 2.0, 200, 4, "S003", "F002"), {"id_dono": None, "data_registo": "2024-04-01 00:00:00"}),
+    (("HH-77-II", "Toyota", "AE86 Trueno", 1986, 30000.0, 150000, "Branco", "RWD", 2, 1.6, 128, 4, "S002", "F003"), {"id_dono": None, "data_registo": "2024-04-05 00:00:00"}),
 ]
 
-def criar_carro(matricula, marca, modelo, ano, preco, kms, cor):
+
+def criar_carro(matricula, marca, modelo, ano, preco, kms, cor,
+                tracao, num_portas, cilindrada, potencia, lotacao, id_stand, id_fornecedor):
     for c, _ in carros:
         if c[0] == matricula:
             return 400, "Já existe um carro com essa matrícula."
-    dados = (matricula, marca, modelo, int(ano), float(preco), int(kms), cor)
-    meta = {"data_registo": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "id_dono": None}
-    carro = (dados, meta)
-    carros.append(carro)
-    return 201, carro
+    dados = (matricula, marca, modelo, int(ano), float(preco), int(kms), cor,
+             tracao, int(num_portas), float(cilindrada), int(potencia), int(lotacao),
+             id_stand, id_fornecedor)
+    meta = {"id_dono": None, "data_registo": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    carros.append((dados, meta))
+    return 201, (dados, meta)
 
 def obter_carro(matricula):
     for dados, meta in carros:
