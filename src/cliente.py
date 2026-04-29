@@ -40,7 +40,8 @@ def atualizar_cliente(cid, nome=None, tel=None, email=None):
     if email: u["email"] = email
     return 200, "Dados atualizados"
 
-def remover_cliente(cid):
+def remover_cliente(ciddef atualizar_cliente(cid, nome=None, telefone=None, email=None, preferencias=None, tipo_compra=None):
+
     if cid not in clientes:
         return 404, "Utilizador não encontrado"
     del clientes[cid]
