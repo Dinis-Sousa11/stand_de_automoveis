@@ -118,7 +118,7 @@ def menu_admin():
         print("1. Listar Carros  | 2. Adicionar Carro  | 3. Remover Carro")
         print("4. Listar Fornec. | 5. Adicionar Fornec.| 6. Remover Fornec.")
         print("7. Listar Func.   | 8. Adicionar Func.  | 9. Remover Func.")
-        print("A. Listar Stands  | B. Adicionar Stand  |")
+        print("A. Listar Stands  | B. Adicionar Stand  | C. Assoc. Fornec. a Stand")
         print("0. Sair")
         op = input("\nComando: ").strip().upper()
 
@@ -145,7 +145,6 @@ def menu_admin():
             for sid, s in stands_list.items():
                 print(f"  {sid} - {s['nome']}")
             ids = input("ID Stand: ").upper().strip()
-
             _, forn_list = fornecedor.listar_fornecedores()
             print(f"\n{Fore.CYAN}Fornecedores disponíveis:")
             for fid, f in forn_list.items():
@@ -229,6 +228,17 @@ def menu_admin():
             code, msg = stand.criar_stand(nome, mor, tel, mail, nif)
             print(Fore.GREEN + f"Stand criado! ID: {msg['id']}" if code == 201 else Fore.RED + str(msg))
 
+        elif op == "C":
+            _, stands_list = stand.listar_stands()
+            for sid, s in stands_list.items():
+                print(f"  {sid} - {s['nome']}")
+            sid = input("ID Stand: ").upper().strip()
+            _, forn_list = fornecedor.listar_fornecedores()
+            for fid, f in forn_list.items():
+                print(f"  {fid} - {f['nome']}")
+            fid = input("ID Fornecedor: ").upper().strip()
+            code, msg = stand.associar_fornecedor(sid, fid)
+            print(Fore.GREEN + msg if code == 200 else Fore.RED + msg)
 
         elif op == "0":
             break
