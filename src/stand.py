@@ -57,3 +57,11 @@ def remover_stand(sid):
     del stands[sid]
     return 200, "Stand removido"
 
+def associar_fornecedor(sid, fid):
+    s = stands.get(sid)
+    if not s:
+        return 404, "Stand não encontrado"
+    if fid in s["lista_ids_fornecedores"]:
+        return 400, "Fornecedor já associado"
+    s["lista_ids_fornecedores"].append(fid)
+    return 200, "Fornecedor associado"
