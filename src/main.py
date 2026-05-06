@@ -3,6 +3,7 @@ import carros
 import fornecedor
 import funcionario
 import stand
+import utils
 import time, sys
 from colorama import Fore, Back, Style, init
 
@@ -26,7 +27,7 @@ def login():
 
     if op == "1":
         cid = input("ID de cliente: ").upper().strip()
-        code, u = cliente.fazer_login(cid)
+        code, u = utils.fazer_login(cid)
         if code == 200:
             loading_bar("A aceder...")
             return u
@@ -64,24 +65,24 @@ def menu_cliente(u):
                 print(f"\n{Fore.CYAN}{'=' * 55}")
                 print(f"{Fore.WHITE}{Style.BRIGHT}           INVENTÁRIO STAND JDM")
                 print(f"{Fore.CYAN}{'=' * 55}")
-                for d, _ in stock:
-                    print(f"{Fore.YELLOW}{d[0]}{Fore.WHITE} | {d[1]} {d[2]} {d[3]} | {d[6]} | {Fore.GREEN}{int(d[4])}€")
+                for mat, c in stock.items():
+                    print(f"{Fore.YELLOW}{mat}{Fore.WHITE} | {c['marca']} {c['modelo']} {c['ano']} | {c['cor']} | {Fore.GREEN}{int(c['preco'])}€")
             else:
                 print(Fore.RED + "Sem stock disponível.")
             input("\nEnter para continuar...")
 
         elif op == "2":
             mat = input("\nDigite a matrícula: ").strip().upper()
-            code, msg = carros.comprar_carro(u, mat)
+            code, msg = utils.comprar_carro(u, mat)
             print(Fore.GREEN + msg if code == 200 else Fore.RED + msg)
 
         elif op == "3":
             valor = input("\nValor a depositar (€): ")
-            code, msg = cliente.carregar_saldo(u, valor)
+            code, msg = utils.carregar_saldo(u, valor)
             print(Fore.GREEN + f"Novo saldo: {msg}€" if code == 200 else Fore.RED + str(msg))
 
         elif op == "4":
-            code, obj = cliente.ver_perfil(u)
+            code, obj = cliente.obter_cliente(u["id"])
             print(f"\n{Fore.YELLOW}--- O TEU PERFIL ---")
             print(f"ID: {obj['id']} | Nome: {obj['nome']} | Nasc: {obj['data_nascimento']}")
             print(f"Tel: {obj['telefone']} | Email: {obj['email']}")
@@ -125,38 +126,50 @@ def menu_admin():
         if op == "1":
             code, stock = carros.listar_stock()
             if code == 200:
-                for d, _ in stock:
-                    print(f"{Fore.YELLOW}{d[0]} | {d[1]} {d[2]} {d[3]} | {d[6]} | {int(d[4])}€ | Stand:{d[12]} | Forn:{d[13]}")
+                for mat, c in stock.items():
+                    print(f"{Fore.YELLOW}{mat} | {c['marca']} {c['modelo']} {c['ano']} | {c['cor']} | {int(c['preco'])}€ | Stand:{c['id_stand']} | Forn:{c['id_fornecedor']}")
             else:
                 print(Fore.RED + "Sem stock.")
             input("\nEnter para continuar...")
 
         elif op == "2":
             mat  = input("Matrícula: ").upper().strip()
-            marc = input("Marca: ");      mod  = input("Modelo: ")
-            ano  = input("Ano: ");        pre  = input("Preço: ")
-            kms  = input("Kms: ");        cor  = input("Cor: ")
-            tra  = input("Tração: ");     por  = input("Nº Portas: ")
-            cil  = input("Cilindrada: "); pot  = input("Potência(cv): ")
+            marc = input("Marca: ");
+            mod  = input("Modelo: ")
+            ano  = input("Ano: ");
+            pre  = input("Preço: ")
+            kms  = input("Kms: ");
+            cor  = input("Cor: ")
+            tra  = input("Tração: ");
+            por  = input("Nº Portas: ")
+            cil  = input("Cilindrada: ");
+            pot  = input("Potência(cv): ")
             lot  = input("Lotação: ")
-            # mostrar stands e fornecedores disponíveis
+            
             _, stands_list = stand.listar_stands()
             print(f"\n{Fore.CYAN}Stands disponíveis:")
+            
             for sid, s in stands_list.items():
                 print(f"  {sid} - {s['nome']}")
             ids = input("ID Stand: ").upper().strip()
             _, forn_list = fornecedor.listar_fornecedores()
             print(f"\n{Fore.CYAN}Fornecedores disponíveis:")
+            
             for fid, f in forn_list.items():
                 print(f"  {fid} - {f['nome']} ({f['pais']})")
             idf = input("ID Fornecedor: ").upper().strip()
             code, msg = carros.criar_carro(mat, marc, mod, ano, pre, kms, cor, tra, por, cil, pot, lot, ids, idf)
-            print(Fore.GREEN + "Carro adicionado!" if code == 201 else Fore.RED + str(msg))
+            
+            if code == 201:
+                utils.associar_carro_fornecedor(idf, mat)
+                print(Fore.GREEN + "Carro adicionado!")
+            else:
+                print(Fore.RED + str(msg))
 
         elif op == "3":
             mat = input("Matrícula: ").upper().strip()
             code, msg = carros.remover_carro(mat)
-            print(Fore.GREEN + msg if code == 200 else Fore.RED + msg)
+            print(Fore.GREEN + str(msg) if code == 200 else Fore.RED + str(msg))
 
         elif op == "4":
             code, lista = fornecedor.listar_fornecedores()
@@ -181,7 +194,7 @@ def menu_admin():
                 print(f"  {fid} - {f['nome']}")
             fid = input("ID Fornecedor: ").upper().strip()
             code, msg = fornecedor.remover_fornecedor(fid)
-            print(Fore.GREEN + msg if code == 200 else Fore.RED + msg)
+            print(Fore.GREEN + str(msg) if code == 200 else Fore.RED + str(msg))
 
         elif op == "7":
             code, lista = funcionario.listar_funcionarios()
@@ -211,7 +224,7 @@ def menu_admin():
                 print(f"  {fid} - {f['nome']}")
             fid = input("ID Funcionário: ").upper().strip()
             code, msg = funcionario.remover_funcionario(fid)
-            print(Fore.GREEN + msg if code == 200 else Fore.RED + msg)
+            print(Fore.GREEN + str(msg) if code == 200 else Fore.RED + str(msg))
 
         elif op == "A":
             code, lista = stand.listar_stands()
@@ -237,7 +250,7 @@ def menu_admin():
             for fid, f in forn_list.items():
                 print(f"  {fid} - {f['nome']}")
             fid = input("ID Fornecedor: ").upper().strip()
-            code, msg = stand.associar_fornecedor(sid, fid)
+            code, msg = utils.associar_fornecedor_stand(sid, fid)
             print(Fore.GREEN + msg if code == 200 else Fore.RED + msg)
 
         elif op == "0":
