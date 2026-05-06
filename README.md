@@ -1,6 +1,9 @@
+
+---
+
 # 🚗 Stand JDM - Sistema de Gestão (CLI)
 
-![Python](https://img.shields.io/badge/Python-3.x-blue)
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-CLI-lightgrey)
@@ -9,73 +12,95 @@
 
 ## 📌 Descrição
 
-Um projeto em Python que simula um stand de carros JDM (Japanese Domestic Market), com sistema de clientes, compra de veículos, gestão de saldo e administração de stands, fornecedores e funcionários — tudo através do terminal.
+Um pequeno projeto em Python que simula um stand de carros JDM (Japanese Domestic Market), com sistema de clientes, compra de veículos e gestão de saldo — tudo através do terminal.
 
 ---
 
 ## 🚀 Funcionalidades
 
-### Área Cliente
-- 🔐 Sistema de login e registo de clientes (ID gerado automaticamente)
-- 💰 Gestão de saldo (depósitos)
-- 🚘 Visualização de stock disponível
-- 🛒 Compra de veículos
-- 👤 Ver e editar perfil
-- ❌ Apagar conta
-
-### Área Admin *(password protegida)*
-- 🚗 Gestão de carros (listar, adicionar, remover)
-- 🏢 Gestão de stands (listar, adicionar)
-- 🤝 Gestão de fornecedores (listar, adicionar, remover)
-- 👷 Gestão de funcionários (listar, adicionar, remover)
-- 🔗 Associar fornecedores a stands
+* 🔐 Sistema de login e registo de clientes
+* 💰 Gestão de saldo
+* 🚘 Visualização de stock de carros
+* 🛒 Compra de veículos
+* 👤 Perfil do utilizador
+* ✏️ Edição de dados do cliente
+* ❌ Remoção de conta
 
 ---
 
-## 🗂️ Estrutura do Projeto
+## 🧠 Estrutura do Projeto
 
 ```
-stand_de_automoveis/
-└── src/
-    ├── main.py          # Menu principal e interface CLI
-    ├── carros.py        # CRUD de veículos
-    ├── cliente.py       # CRUD de clientes
-    ├── fornecedor.py    # CRUD de fornecedores
-    ├── fornecimento.py  # Relação stand ↔ fornecedor
-    ├── funcionario.py   # CRUD de funcionários
-    ├── stand.py         # CRUD de stands
-    └── utils.py         # Funções auxiliares
+📁 src/
+ ├── main.py       # Interface principal
+ ├── carros.py     # Gestão de stock
+ └── cliente.py    # Gestão de clientes
 ```
 
 ---
 
-## 🧩 Entidades
+## 🛠️ Tecnologias
 
-| Entidade | Descrição |
-|---|---|
-| **Carro** | Veículos disponíveis no stand com dados técnicos completos |
-| **Cliente** | Utilizadores registados que podem comprar carros |
-| **Fornecedor** | Empresas que fornecem veículos ao stand |
-| **Funcionário** | Colaboradores do stand |
-| **Stand** | Localizações físicas do Stand JDM |
-| **Fornecimento** | Relação entre stands e fornecedores |
+* Python 3
+* colorama (cores no terminal)
 
 ---
 
-## ▶️ Como correr
+## 📦 Instalação
 
 ```bash
 cd src
 python main.py
 ```
 
-### Requisitos
-```bash
-pip install colorama
-```
+---
+
+## 🎮 Como Usar
+
+1. Executa o programa
+2. Cria conta ou faz login
+3. Usa o menu para:
+
+   * Ver stock
+   * Comprar carros
+   * Adicionar saldo
+   * Gerir perfil
 
 ---
 
-## 📄 Licença
+## 🚗 Carros Disponíveis
 
-MIT
+* Nissan Skyline R34
+* Toyota Supra MK4
+* Mazda RX-7 FD
+* Honda NSX
+* Mitsubishi Lancer Evo IX
+* Subaru Impreza 22B
+* Nissan Silvia S15
+* Toyota AE86 Trueno
+
+---
+
+## ⚠️ Notas
+
+* Dados não são guardados permanentemente (reset ao fechar)
+* Projeto focado em aprendizagem de:
+
+  * CRUD
+  * Estruturas de dados
+  * Modularização
+
+---
+
+## 💡 Melhorias Futuras
+
+* 💾 Guardar dados em ficheiro (JSON ou DB)
+* 🔑 Autenticação mais segura
+* 🖥️ Interface gráfica
+* 📊 Histórico de compras
+
+---
+
+## 👤 Autor
+
+Feito por **Dinis Sousa**
