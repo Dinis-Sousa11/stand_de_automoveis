@@ -76,6 +76,6 @@ pip install colorama
 
 ---
 
-## 📄 Licença
+## 👤 Autor
 
-MIT
+Feito por **Dinis Sousa**
