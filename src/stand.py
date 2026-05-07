@@ -28,14 +28,16 @@ def obter_stand(sid):
         return 404, "Stand não encontrado"
     return 200, s
 
-def atualizar_stand(sid, nome=None, morada=None, telefone=None, email=None):
+def atualizar_stand(sid, nome=None, morada=None, telefone=None,
+                    email=None, lista_ids_fornecedores=None):
     s = stands.get(sid)
     if not s:
         return 404, "Stand não encontrado"
-    if nome:     s["nome"] = nome
-    if morada:   s["morada"] = morada
-    if telefone: s["telefone"] = telefone
-    if email:    s["email"] = email
+    if nome:                   s["nome"] = nome
+    if morada:                 s["morada"] = morada
+    if telefone:               s["telefone"] = telefone
+    if email:                  s["email"] = email
+    if lista_ids_fornecedores: s["lista_ids_fornecedores"] = lista_ids_fornecedores  # ✅ novo
     return 200, s
 
 def remover_stand(sid):
