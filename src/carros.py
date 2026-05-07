@@ -48,16 +48,18 @@ def obter_carro(matricula):
         return 404, "Não encontrado"
     return 200, carro
 
-def atualizar_carro(matricula, marca=None, modelo=None, ano=None, preco=None, kms=None, cor=None):
+def atualizar_carro(matricula, marca=None, modelo=None, ano=None,
+                    preco=None, kms=None, cor=None, id_cliente=None):
     carro = carros.get(matricula.upper())
     if not carro:
         return 404, "Carro não encontrado"
-    if marca:  carro["marca"] = marca
-    if modelo: carro["modelo"] = modelo
-    if ano:    carro["ano"] = ano
-    if preco:  carro["preco"] = preco
-    if kms:    carro["kms"] = kms
-    if cor:    carro["cor"] = cor
+    if marca:      carro["marca"] = marca
+    if modelo:     carro["modelo"] = modelo
+    if ano:        carro["ano"] = ano
+    if preco:      carro["preco"] = preco
+    if kms:        carro["kms"] = kms
+    if cor:        carro["cor"] = cor
+    if id_cliente: carro["id_cliente"] = id_cliente  # ✅ novo
     return 200, carro
 
 def remover_carro(matricula):
