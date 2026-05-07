@@ -34,14 +34,16 @@ def obter_fornecedor(fid):
         return 404, "Fornecedor não encontrado"
     return 200, f
 
-def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None, morada=None):
+def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None,
+                          morada=None, nova_matricula=None):
     f = fornecedores.get(fid)
     if not f:
         return 404, "Fornecedor não encontrado"
-    if nome:      f["nome"] = nome
-    if contacto:  f["contacto"] = contacto
-    if avaliacao: f["avaliacao"] = int(avaliacao)
-    if morada:    f["morada"] = morada
+    if nome:           f["nome"] = nome
+    if contacto:       f["contacto"] = contacto
+    if avaliacao:      f["avaliacao"] = int(avaliacao)
+    if morada:         f["morada"] = morada
+    if nova_matricula: f["ids_carros"].append(nova_matricula)  # ✅ novo
     return 200, f
 
 def remover_fornecedor(fid):
