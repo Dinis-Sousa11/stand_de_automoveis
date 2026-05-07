@@ -1,6 +1,6 @@
 from datetime import datetime
 
-# ─── GERADORES DE ID ──────────────────────────────────────────────────────────
+# ─── GERADORES DE ID ────────────────────────────────────────────
 
 _contadores = {
     "cliente":      1,
@@ -23,7 +23,7 @@ def gerar_id(entidade):
     _contadores[entidade] += 1
     return novo_id
 
-# ─── VALIDAÇÕES ───────────────────────────────────────────────────────────────
+# ─── VALIDAÇÕES ─────────────────────────────────────────────────
 
 def validar_data(data_texto):
     try:
@@ -38,7 +38,7 @@ def validar_saldo(valor):
     except (ValueError, TypeError):
         return False
 
-# ─── LÓGICA DE NEGÓCIO ────────────────────────────────────────────────────────
+# ─── LÓGICA DE NEGÓCIO ──────────────────────────────────────────
 
 def fazer_login(cid):
     from cliente import clientes
@@ -54,33 +54,29 @@ def carregar_saldo(u, valor):
     return 200, u["saldo"]
 
 def comprar_carro(u, matricula):
-    from carros import carros
+    from carros import carros, atualizar_carro
     carro = carros.get(matricula.upper())
     if not carro or carro["id_cliente"]:
         return 404, "Carro não disponível"
-
     if u["saldo"] < carro["preco"]:
         return 403, "Saldo insuficiente"
 
     u["saldo"] -= carro["preco"]
-    carro["id_cliente"] = u["id"]
+    atualizar_carro(matricula.upper(), id_cliente=u["id"])
     u["carros"].append(f"{carro['marca']} {carro['modelo']}")
     return 200, "Compra efetuada"
 
 def associar_carro_fornecedor(fid, matricula):
-    from fornecedor import fornecedores
-    f = fornecedores.get(fid)
-    if not f:
-        return 404, "Fornecedor não encontrado"
-    f["ids_carros"].append(matricula)
-    return 200, "Carro associado ao fornecedor"
+    from fornecedor import atualizar_fornecedor
+    return atualizar_fornecedor(fid, nova_matricula=matricula)
 
 def associar_fornecedor_stand(sid, fid):
-    from stand import stands
+    from stand import stands, atualizar_stand
     s = stands.get(sid)
     if not s:
         return 404, "Stand não encontrado"
     if fid in s["lista_ids_fornecedores"]:
         return 400, "Fornecedor já associado"
-    s["lista_ids_fornecedores"].append(fid)
+    nova_lista = s["lista_ids_fornecedores"] + [fid]
+    atualizar_stand(sid, lista_ids_fornecedores=nova_lista)
     return 200, "Fornecedor associado ao stand"
