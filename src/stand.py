@@ -37,7 +37,7 @@ def atualizar_stand(sid, nome=None, morada=None, telefone=None,
     if morada:                 s["morada"] = morada
     if telefone:               s["telefone"] = telefone
     if email:                  s["email"] = email
-    if lista_ids_fornecedores: s["lista_ids_fornecedores"] = lista_ids_fornecedores  # ✅ novo
+    if lista_ids_fornecedores: s["lista_ids_fornecedores"] = lista_ids_fornecedores 
     return 200, s
 
 def remover_stand(sid):
