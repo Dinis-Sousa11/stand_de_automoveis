@@ -59,7 +59,7 @@ def atualizar_carro(matricula, marca=None, modelo=None, ano=None,
     if preco:      carro["preco"] = preco
     if kms:        carro["kms"] = kms
     if cor:        carro["cor"] = cor
-    if id_cliente: carro["id_cliente"] = id_cliente  # ✅ novo
+    if id_cliente: carro["id_cliente"] = id_cliente  
     return 200, carro
 
 def remover_carro(matricula):
