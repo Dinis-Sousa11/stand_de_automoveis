@@ -43,7 +43,7 @@ def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None,
     if contacto:       f["contacto"] = contacto
     if avaliacao:      f["avaliacao"] = int(avaliacao)
     if morada:         f["morada"] = morada
-    if nova_matricula: f["ids_carros"].append(nova_matricula)  # ✅ novo
+    if nova_matricula: f["ids_carros"].append(nova_matricula)  
     return 200, f
 
 def remover_fornecedor(fid):
