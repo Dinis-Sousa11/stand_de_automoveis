@@ -1,11 +1,23 @@
 from datetime import datetime
 from utils import gerar_id
+import json
+import os
 
-fornecedores = {
-    "F001": {"id": "F001", "nome": "Tokyo Auto Import", "contacto": "+81 3-0000-0001", "pais": "Japão", "email": "contact@tokyoauto.jp", "tipo": "importador", "morada": "1-1 Shibuya, Tokyo", "avaliacao": 5, "ids_carros": [], "data_registo": "2020-01-01 00:00:00"},
-    "F002": {"id": "F002", "nome": "JDM Auctions Ltd", "contacto": "+81 6-0000-0002", "pais": "Japão", "email": "info@jdmauctions.jp", "tipo": "leiloeiro", "morada": "2-5 Osaka Namba", "avaliacao": 4, "ids_carros": [], "data_registo": "2020-06-01 00:00:00"},
-    "F003": {"id": "F003", "nome": "Euro JDM Motors", "contacto": "+44 20 0000 0003", "pais": "Reino Unido", "email": "sales@eurojdm.co.uk", "tipo": "importador", "morada": "10 Car Street, London", "avaliacao": 4, "ids_carros": [], "data_registo": "2021-01-10 00:00:00"},
-}
+FICHEIRO_JSON = "fornecedores.json"
+
+
+def _carregar_fornecedores():
+    if os.path.exists(FICHEIRO_JSON):
+        with open(FICHEIRO_JSON, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return 200
+
+def _guardar_fornecedores():
+    with open(FICHEIRO_JSON, "w", encoding="utf-8") as f:
+        json.dump(fornecedores, f, ensure_ascii=False, indent=2)
+
+fornecedores = _carregar_fornecedores()
+
 
 def criar_fornecedor(nome, contacto, pais, email, tipo, morada, avaliacao):
     fid = gerar_id("fornecedor")
@@ -21,6 +33,7 @@ def criar_fornecedor(nome, contacto, pais, email, tipo, morada, avaliacao):
         "ids_carros": [],
         "data_registo": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
+    _guardar_fornecedores()
     return 201, fornecedores[fid]
 
 def listar_fornecedores():
@@ -43,11 +56,13 @@ def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None,
     if contacto:       f["contacto"] = contacto
     if avaliacao:      f["avaliacao"] = int(avaliacao)
     if morada:         f["morada"] = morada
-    if nova_matricula: f["ids_carros"].append(nova_matricula)  
+    if nova_matricula: f["ids_carros"].append(nova_matricula)
+    _guardar_fornecedores()
     return 200, f
 
 def remover_fornecedor(fid):
     if fid not in fornecedores:
         return 404, "Fornecedor não encontrado"
     del fornecedores[fid]
+    _guardar_fornecedores()
     return 200, fid
