@@ -1,7 +1,24 @@
 from datetime import datetime
 from utils import gerar_id, validar_data
+import json
+import os
+
+FICHEIRO_JSON = "clientes.json"
 
 clientes = {}
+
+def _carregar_clientes():
+    if os.path.exists(FICHEIRO_JSON):
+        with open(FICHEIRO_JSON, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+def _guardar_clientes():
+    with open(FICHEIRO_JSON, "w", encoding="utf-8") as f:
+        json.dump(clientes, f, ensure_ascii=False, indent=2)
+
+clientes = _carregar_clientes()
+
 
 def criar_cliente(nome, data_nascimento, telefone, email, preferencias, tipo_compra):
     if not validar_data(data_nascimento):
@@ -19,6 +36,7 @@ def criar_cliente(nome, data_nascimento, telefone, email, preferencias, tipo_com
         "carros": [],
         "data_registo": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
+    _guardar_clientes()
     return 201, clientes[cid]
 
 def listar_clientes():
@@ -41,10 +59,12 @@ def atualizar_cliente(cid, nome=None, telefone=None, email=None, preferencias=No
     if email:        u["email"] = email
     if preferencias: u["preferencias"] = preferencias
     if tipo_compra:  u["tipo_compra"] = tipo_compra
+    _guardar_clientes()
     return 200, cid
 
 def remover_cliente(cid):
     if cid not in clientes:
         return 404, "Cliente não encontrado"
     del clientes[cid]
+    _guardar_clientes()
     return 200, cid
