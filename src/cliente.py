@@ -17,10 +17,9 @@ def _guardar_clientes():
     with open(FICHEIRO_JSON, "w", encoding="utf-8") as f:
         json.dump(clientes, f, ensure_ascii=False, indent=2)
 
-clientes = _carregar_clientes()
-
 
 def criar_cliente(nome, data_nascimento, telefone, email, preferencias, tipo_compra):
+    _carregar_clientes()
     if not validar_data(data_nascimento):
         return 400, "Data inválida. Use formato YYYY-MM-DD"
     cid = gerar_id("cliente")
@@ -40,17 +39,20 @@ def criar_cliente(nome, data_nascimento, telefone, email, preferencias, tipo_com
     return 201, clientes[cid]
 
 def listar_clientes():
+    _carregar_clientes()
     if not clientes:
         return 404, "Sem clientes registados"
     return 200, clientes
 
 def obter_cliente(cid):
+    _carregar_clientes()
     u = clientes.get(cid.upper())
     if not u:
         return 404, "Cliente não encontrado"
     return 200, u
 
 def atualizar_cliente(cid, nome=None, telefone=None, email=None, preferencias=None, tipo_compra=None):
+    _carregar_clientes()
     u = clientes.get(cid)
     if not u:
         return 404, "Cliente não encontrado"
@@ -63,6 +65,7 @@ def atualizar_cliente(cid, nome=None, telefone=None, email=None, preferencias=No
     return 200, cid
 
 def remover_cliente(cid):
+    _carregar_clientes()
     if cid not in clientes:
         return 404, "Cliente não encontrado"
     del clientes[cid]

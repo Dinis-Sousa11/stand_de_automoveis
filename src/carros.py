@@ -19,8 +19,6 @@ def _guardar_carros():
         json.dump(carros, f, ensure_ascii=False, indent=2)
 
 
-
-
 def criar_carro(matricula, marca, modelo, ano, preco, kms, cor,
                 tracao, num_portas, cilindrada, potencia, lotacao, id_stand, id_fornecedor):
     _carregar_carros()

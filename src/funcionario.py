@@ -4,7 +4,7 @@ import json
 import os
 
 FICHEIRO_JSON = "funcionarios.json"
-
+funcionarios={}
 
 def _carregar_funcionarios():
     if os.path.exists(FICHEIRO_JSON):
@@ -16,10 +16,9 @@ def _guardar_funcionarios():
     with open(FICHEIRO_JSON, "w", encoding="utf-8") as f:
         json.dump(funcionarios, f, ensure_ascii=False, indent=2)
 
-funcionarios = _carregar_funcionarios()
-
 
 def criar_funcionario(nome, cargo, salario, telefone, turno, nif, iban, id_stand):
+    _carregar_funcionarios()
     fid = gerar_id("funcionario")
     funcionarios[fid] = {
         "id": fid,
@@ -39,17 +38,20 @@ def criar_funcionario(nome, cargo, salario, telefone, turno, nif, iban, id_stand
     return 201, funcionarios[fid]
 
 def listar_funcionarios():
+    _carregar_funcionarios()
     if not funcionarios:
         return 404, "Sem funcionários registados"
     return 200, funcionarios
 
 def obter_funcionario(fid):
+    _carregar_funcionarios()
     f = funcionarios.get(fid)
     if not f:
         return 404, "Funcionário não encontrado"
     return 200, f
 
 def atualizar_funcionario(fid, nome=None, cargo=None, salario=None, turno=None, avaliacao=None):
+    _carregar_funcionarios()
     f = funcionarios.get(fid)
     if not f:
         return 404, "Funcionário não encontrado"
@@ -62,6 +64,7 @@ def atualizar_funcionario(fid, nome=None, cargo=None, salario=None, turno=None, 
     return 200, f
 
 def remover_funcionario(fid):
+    _carregar_funcionarios()
     if fid not in funcionarios:
         return 404, "Funcionário não encontrado"
     del funcionarios[fid]

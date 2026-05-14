@@ -4,7 +4,7 @@ import json
 import os
 
 FICHEIRO_JSON = "fornecedores.json"
-
+fornecedores={}
 
 def _carregar_fornecedores():
     if os.path.exists(FICHEIRO_JSON):
@@ -16,10 +16,9 @@ def _guardar_fornecedores():
     with open(FICHEIRO_JSON, "w", encoding="utf-8") as f:
         json.dump(fornecedores, f, ensure_ascii=False, indent=2)
 
-fornecedores = _carregar_fornecedores()
-
 
 def criar_fornecedor(nome, contacto, pais, email, tipo, morada, avaliacao):
+    _carregar_fornecedores()
     fid = gerar_id("fornecedor")
     fornecedores[fid] = {
         "id": fid,
@@ -37,18 +36,20 @@ def criar_fornecedor(nome, contacto, pais, email, tipo, morada, avaliacao):
     return 201, fornecedores[fid]
 
 def listar_fornecedores():
+    _carregar_fornecedores()
     if not fornecedores:
         return 404, "Sem fornecedores registados"
     return 200, fornecedores
 
 def obter_fornecedor(fid):
+    _carregar_fornecedores()
     f = fornecedores.get(fid)
     if not f:
         return 404, "Fornecedor não encontrado"
     return 200, f
 
-def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None,
-                          morada=None, nova_matricula=None):
+def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None,morada=None, nova_matricula=None):
+    _carregar_fornecedores()
     f = fornecedores.get(fid)
     if not f:
         return 404, "Fornecedor não encontrado"
@@ -61,6 +62,7 @@ def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None,
     return 200, f
 
 def remover_fornecedor(fid):
+    _carregar_fornecedores()
     if fid not in fornecedores:
         return 404, "Fornecedor não encontrado"
     del fornecedores[fid]
