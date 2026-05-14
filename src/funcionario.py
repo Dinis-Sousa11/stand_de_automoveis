@@ -3,88 +3,67 @@ from utils import gerar_id
 import json
 import os
 
-FICHEIRO_JSON = "carros.json"
-carros = {}
+FICHEIRO_JSON = "funcionarios.json"
 
-def _carregar_carros():
-    global carros
+
+def _carregar_funcionarios():
     if os.path.exists(FICHEIRO_JSON):
         with open(FICHEIRO_JSON, "r", encoding="utf-8") as f:
-            carros = json.load(f)
-    else:
-        carros = {}
+            return json.load(f)
+    return 200
 
-def _guardar_carros():
+def _guardar_funcionarios():
     with open(FICHEIRO_JSON, "w", encoding="utf-8") as f:
-        json.dump(carros, f, ensure_ascii=False, indent=2)
+        json.dump(funcionarios, f, ensure_ascii=False, indent=2)
+
+funcionarios = _carregar_funcionarios()
 
 
-
-
-def criar_carro(matricula, marca, modelo, ano, preco, kms, cor,
-                tracao, num_portas, cilindrada, potencia, lotacao, id_stand, id_fornecedor):
-    _carregar_carros()
-    if matricula in carros:
-        return 400, "Já existe um carro com essa matrícula."
-    carro = {
-        "matricula": matricula,
-        "marca": marca,
-        "modelo": modelo,
-        "ano": int(ano),
-        "preco": float(preco),
-        "kms": int(kms),
-        "cor": cor,
-        "tracao": tracao,
-        "num_portas": int(num_portas),
-        "cilindrada": float(cilindrada),
-        "potencia": int(potencia),
-        "lotacao": int(lotacao),
+def criar_funcionario(nome, cargo, salario, telefone, turno, nif, iban, id_stand):
+    fid = gerar_id("funcionario")
+    funcionarios[fid] = {
+        "id": fid,
+        "nome": nome,
+        "cargo": cargo,
+        "salario": float(salario),
+        "telefone": telefone,
+        "turno": turno,
+        "nif": nif,
+        "iban": iban,
         "id_stand": id_stand,
-        "id_fornecedor": id_fornecedor,
-        "id_cliente": None,
-        "data_registo": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "avaliacao": 0,
+        "vendas_realizadas": [],
+        "data_entrada": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
-    carros[matricula] = carro
-    _guardar_carros()
-    return 201, carro
+    _guardar_funcionarios()
+    return 201, funcionarios[fid]
 
-def listar_stock():
-    _carregar_carros()
-    disponiveis = {m: c for m, c in carros.items() if not c["id_cliente"]}
-    if not disponiveis:
-        return 404, {}
-    return 200, disponiveis
+def listar_funcionarios():
+    if not funcionarios:
+        return 404, "Sem funcionários registados"
+    return 200, funcionarios
 
-def obter_carro(matricula):
-    _carregar_carros()
-    carro = carros.get(matricula.upper())
-    if not carro:
-        return 404, "Não encontrado"
-    return 200, carro
+def obter_funcionario(fid):
+    f = funcionarios.get(fid)
+    if not f:
+        return 404, "Funcionário não encontrado"
+    return 200, f
 
-def atualizar_carro(matricula, marca=None, modelo=None, ano=None,
-                    preco=None, kms=None, cor=None, id_cliente=None):
-    _carregar_carros()
-    carro = carros.get(matricula.upper())
-    if not carro:
-        return 404, "Carro não encontrado"
-    if marca:      carro["marca"] = marca
-    if modelo:     carro["modelo"] = modelo
-    if ano:        carro["ano"] = ano
-    if preco:      carro["preco"] = preco
-    if kms:        carro["kms"] = kms
-    if cor:        carro["cor"] = cor
-    if id_cliente: carro["id_cliente"] = id_cliente
-    _guardar_carros()
-    return 200, carro
+def atualizar_funcionario(fid, nome=None, cargo=None, salario=None, turno=None, avaliacao=None):
+    f = funcionarios.get(fid)
+    if not f:
+        return 404, "Funcionário não encontrado"
+    if nome:      f["nome"] = nome
+    if cargo:     f["cargo"] = cargo
+    if salario:   f["salario"] = float(salario)
+    if turno:     f["turno"] = turno
+    if avaliacao: f["avaliacao"] = int(avaliacao)
+    _guardar_funcionarios()
+    return 200, f
 
-def remover_carro(matricula):
-    _carregar_carros()
-    carro = carros.get(matricula.upper())
-    if not carro:
-        return 404, "Carro não encontrado"
-    if carro["id_cliente"]:
-        return 400, "Carro já tem dono"
-    del carros[matricula.upper()]
-    _guardar_carros()
-    return 200, matricula
+def remover_funcionario(fid):
+    if fid not in funcionarios:
+        return 404, "Funcionário não encontrado"
+    del funcionarios[fid]
+    _guardar_funcionarios()
+    return 200, fid
