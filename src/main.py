@@ -145,21 +145,21 @@ def menu_admin():
             cil  = input("Cilindrada: ");
             pot  = input("Potência(cv): ")
             lot  = input("Lotação: ")
-            
+
             _, stands_list = stand.listar_stands()
             print(f"\n{Fore.CYAN}Stands disponíveis:")
-            
+
             for sid, s in stands_list.items():
                 print(f"  {sid} - {s['nome']}")
             ids = input("ID Stand: ").upper().strip()
             _, forn_list = fornecedor.listar_fornecedores()
             print(f"\n{Fore.CYAN}Fornecedores disponíveis:")
-            
+
             for fid, f in forn_list.items():
                 print(f"  {fid} - {f['nome']} ({f['pais']})")
             idf = input("ID Fornecedor: ").upper().strip()
             code, msg = carros.criar_carro(mat, marc, mod, ano, pre, kms, cor, tra, por, cil, pot, lot, ids, idf)
-            
+
             if code == 201:
                 utils.associar_carro_fornecedor(idf, mat)
                 print(Fore.GREEN + "Carro adicionado!")

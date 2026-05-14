@@ -1,13 +1,24 @@
 from datetime import datetime
 from utils import gerar_id
+import json
+import os
 
-funcionarios = {
-    "FN001": {"id": "FN001", "nome": "Carlos Silva", "cargo": "Vendedor", "salario": 1200.0, "telefone": "910000001", "turno": "manhã", "nif": "123456789", "iban": "PT50000201231234567890154", "id_stand": "S001", "avaliacao": 4, "vendas_realizadas": [], "data_entrada": "2020-02-01 00:00:00"},
-    "FN002": {"id": "FN002", "nome": "Ana Ferreira", "cargo": "Gestora", "salario": 1800.0, "telefone": "920000002", "turno": "manhã", "nif": "987654321", "iban": "PT50000201231234567890155", "id_stand": "S001", "avaliacao": 5, "vendas_realizadas": [], "data_entrada": "2019-05-10 00:00:00"},
-    "FN003": {"id": "FN003", "nome": "Rui Costa", "cargo": "Mecânico", "salario": 1100.0, "telefone": "930000003", "turno": "tarde", "nif": "112233445", "iban": "PT50000201231234567890156", "id_stand": "S002", "avaliacao": 3, "vendas_realizadas": [], "data_entrada": "2021-09-20 00:00:00"},
-}
+FICHEIRO_JSON = "funcionarios.json"
+funcionarios={}
+
+def _carregar_funcionarios():
+    if os.path.exists(FICHEIRO_JSON):
+        with open(FICHEIRO_JSON, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return 200
+
+def _guardar_funcionarios():
+    with open(FICHEIRO_JSON, "w", encoding="utf-8") as f:
+        json.dump(funcionarios, f, ensure_ascii=False, indent=2)
+
 
 def criar_funcionario(nome, cargo, salario, telefone, turno, nif, iban, id_stand):
+    _carregar_funcionarios()
     fid = gerar_id("funcionario")
     funcionarios[fid] = {
         "id": fid,
@@ -23,20 +34,24 @@ def criar_funcionario(nome, cargo, salario, telefone, turno, nif, iban, id_stand
         "vendas_realizadas": [],
         "data_entrada": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
+    _guardar_funcionarios()
     return 201, funcionarios[fid]
 
 def listar_funcionarios():
+    _carregar_funcionarios()
     if not funcionarios:
         return 404, "Sem funcionários registados"
     return 200, funcionarios
 
 def obter_funcionario(fid):
+    _carregar_funcionarios()
     f = funcionarios.get(fid)
     if not f:
         return 404, "Funcionário não encontrado"
     return 200, f
 
 def atualizar_funcionario(fid, nome=None, cargo=None, salario=None, turno=None, avaliacao=None):
+    _carregar_funcionarios()
     f = funcionarios.get(fid)
     if not f:
         return 404, "Funcionário não encontrado"
@@ -45,10 +60,13 @@ def atualizar_funcionario(fid, nome=None, cargo=None, salario=None, turno=None, 
     if salario:   f["salario"] = float(salario)
     if turno:     f["turno"] = turno
     if avaliacao: f["avaliacao"] = int(avaliacao)
+    _guardar_funcionarios()
     return 200, f
 
 def remover_funcionario(fid):
+    _carregar_funcionarios()
     if fid not in funcionarios:
         return 404, "Funcionário não encontrado"
     del funcionarios[fid]
+    _guardar_funcionarios()
     return 200, fid
