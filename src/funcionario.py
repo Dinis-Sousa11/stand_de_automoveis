@@ -1,7 +1,6 @@
 from datetime import datetime
 from utils import gerar_id
-import logging
-log = logging.getLogger(__name__)
+from utils import log
 import json
 import os
 
@@ -61,7 +60,7 @@ def obter_funcionario(fid):
     _carregar_funcionarios()
     f = funcionarios.get(fid)
     if not f:
-        log.warning(f"Funcionário não encontrado: {fid}")
+        log.error(f"Funcionário não encontrado: {fid}")
         return 404, "Funcionário não encontrado"
     log.debug(f"Funcionário encontrado: {f['nome']} ({fid})")
     return 200, f
@@ -71,7 +70,7 @@ def atualizar_funcionario(fid, nome=None, cargo=None, salario=None, turno=None, 
     _carregar_funcionarios()
     f = funcionarios.get(fid)
     if not f:
-        log.warning(f"Atualização falhada — funcionário não encontrado: {fid}")
+        log.error(f"Atualização falhada — funcionário não encontrado: {fid}")
         return 404, "Funcionário não encontrado"
     if nome:      f["nome"] = nome
     if cargo:     f["cargo"] = cargo
@@ -86,7 +85,7 @@ def remover_funcionario(fid):
     log.info(f"Tentativa de remoção do funcionário: {fid}")
     _carregar_funcionarios()
     if fid not in funcionarios:
-        log.warning(f"Remoção falhada — funcionário não encontrado: {fid}")
+        log.error(f"Remoção falhada — funcionário não encontrado: {fid}")
         return 404, "Funcionário não encontrado"
     nome = funcionarios[fid]["nome"]
     del funcionarios[fid]

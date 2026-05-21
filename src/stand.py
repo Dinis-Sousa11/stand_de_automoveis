@@ -1,7 +1,6 @@
 from datetime import datetime
 from utils import gerar_id
-import logging
-log = logging.getLogger(__name__)
+from utils import log
 import json
 import os
 
@@ -53,7 +52,7 @@ def obter_stand(sid):
     _carregar_stands()
     s = stands.get(sid)
     if not s:
-        log.warning(f"Stand não encontrado: {sid}")
+        log.error(f"Stand não encontrado: {sid}")
         return 404, "Stand não encontrado"
     log.debug(f"Stand encontrado: {s['nome']} ({sid})")
     return 200, s
@@ -64,7 +63,7 @@ def atualizar_stand(sid, nome=None, morada=None, telefone=None,
     _carregar_stands()
     s = stands.get(sid)
     if not s:
-        log.warning(f"Atualização falhada — stand não encontrado: {sid}")
+        log.error(f"Atualização falhada — stand não encontrado: {sid}")
         return 404, "Stand não encontrado"
     if nome:                   s["nome"] = nome
     if morada:                 s["morada"] = morada
@@ -81,7 +80,7 @@ def remover_stand(sid):
     log.info(f"Tentativa de remoção do stand: {sid}")
     _carregar_stands()
     if sid not in stands:
-        log.warning(f"Remoção falhada — stand não encontrado: {sid}")
+        log.error(f"Remoção falhada — stand não encontrado: {sid}")
         return 404, "Stand não encontrado"
     nome = stands[sid]["nome"]
     del stands[sid]

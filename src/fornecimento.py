@@ -1,6 +1,5 @@
 from datetime import datetime
-import logging
-log = logging.getLogger(__name__)
+from utils import log
 import json
 import os
 
@@ -37,7 +36,7 @@ def criar_fornecimento(id_stand, id_fornecedor):
     _carregar_fornecimentos()
     for fo in fornecimentos.values():
         if fo["id_stand"] == id_stand and fo["id_fornecedor"] == id_fornecedor:
-            log.warning(f"Fornecimento duplicado: stand={id_stand} já tem fornecedor={id_fornecedor}")
+            log.error(f"Fornecimento duplicado: stand={id_stand} já tem fornecedor={id_fornecedor}")
             return 400, "Fornecimento já existe"
     foid = _gerar_id()
     fornecimentos[foid] = {
@@ -64,7 +63,7 @@ def obter_fornecimento(foid):
     _carregar_fornecimentos()
     fo = fornecimentos.get(foid)
     if not fo:
-        log.warning(f"Fornecimento não encontrado: {foid}")
+        log.error(f"Fornecimento não encontrado: {foid}")
         return 404, "Fornecimento não encontrado"
     log.debug(f"Fornecimento encontrado: {foid}")
     return 200, fo
@@ -73,7 +72,7 @@ def remover_fornecimento(foid):
     log.info(f"Tentativa de remoção do fornecimento: {foid}")
     _carregar_fornecimentos()
     if foid not in fornecimentos:
-        log.warning(f"Remoção falhada — fornecimento não encontrado: {foid}")
+        log.error(f"Remoção falhada — fornecimento não encontrado: {foid}")
         return 404, "Fornecimento não encontrado"
     del fornecimentos[foid]
     _guardar_fornecimentos()

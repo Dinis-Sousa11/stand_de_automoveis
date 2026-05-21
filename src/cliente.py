@@ -1,7 +1,6 @@
 from datetime import datetime
 from utils import gerar_id, validar_data
-import logging
-log = logging.getLogger(__name__)
+from utils import log
 import json
 import os
 

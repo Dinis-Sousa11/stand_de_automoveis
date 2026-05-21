@@ -1,7 +1,6 @@
 from datetime import datetime
 from utils import gerar_id
-import logging
-log = logging.getLogger(__name__)
+from utils import log
 import json
 import os
 
@@ -59,7 +58,7 @@ def obter_fornecedor(fid):
     _carregar_fornecedores()
     f = fornecedores.get(fid)
     if not f:
-        log.warning(f"Fornecedor não encontrado: {fid}")
+        log.error(f"Fornecedor não encontrado: {fid}")
         return 404, "Fornecedor não encontrado"
     log.debug(f"Fornecedor encontrado: {f['nome']} ({fid})")
     return 200, f
@@ -69,7 +68,7 @@ def atualizar_fornecedor(fid, nome=None, contacto=None, avaliacao=None, morada=N
     _carregar_fornecedores()
     f = fornecedores.get(fid)
     if not f:
-        log.warning(f"Atualização falhada — fornecedor não encontrado: {fid}")
+        log.error(f"Atualização falhada — fornecedor não encontrado: {fid}")
         return 404, "Fornecedor não encontrado"
     if nome:           f["nome"] = nome
     if contacto:       f["contacto"] = contacto
@@ -86,7 +85,7 @@ def remover_fornecedor(fid):
     log.info(f"Tentativa de remoção do fornecedor: {fid}")
     _carregar_fornecedores()
     if fid not in fornecedores:
-        log.warning(f"Remoção falhada — fornecedor não encontrado: {fid}")
+        log.error(f"Remoção falhada — fornecedor não encontrado: {fid}")
         return 404, "Fornecedor não encontrado"
     nome = fornecedores[fid]["nome"]
     del fornecedores[fid]
