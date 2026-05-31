@@ -28,7 +28,7 @@ def criar_cliente(nome, data_nascimento, telefone, email, preferencias, tipo_com
     log.info(f"Tentativa de criação de cliente: nome={nome}, email={email}, tipo={tipo_compra}")
     _carregar_clientes()
     if not validar_data(data_nascimento):
-        log.warning(f"Data de nascimento inválida fornecida: '{data_nascimento}' para cliente '{nome}'")
+        log.error(f"Data de nascimento inválida fornecida: '{data_nascimento}' para cliente '{nome}'")
         return 400, "Data inválida. Use formato YYYY-MM-DD"
     cid = gerar_id("cliente")
     clientes[cid] = {
@@ -51,7 +51,7 @@ def listar_clientes():
     log.debug("A listar clientes")
     _carregar_clientes()
     if not clientes:
-        log.info("Listagem de clientes: sem clientes registados")
+        log.error("Listagem de clientes: sem clientes registados")
         return 404, "Sem clientes registados"
     log.info(f"Clientes listados: {len(clientes)} registo(s)")
     return 200, clientes
@@ -61,7 +61,7 @@ def obter_cliente(cid):
     _carregar_clientes()
     u = clientes.get(cid.upper())
     if not u:
-        log.warning(f"Cliente não encontrado: {cid}")
+        log.error(f"Cliente não encontrado: {cid}")
         return 404, "Cliente não encontrado"
     log.debug(f"Cliente encontrado: {u['nome']} ({cid})")
     return 200, u
@@ -71,7 +71,7 @@ def atualizar_cliente(cid, nome=None, telefone=None, email=None, preferencias=No
     _carregar_clientes()
     u = clientes.get(cid)
     if not u:
-        log.warning(f"Atualização falhada — cliente não encontrado: {cid}")
+        log.error(f"Atualização falhada — cliente não encontrado: {cid}")
         return 404, "Cliente não encontrado"
     if nome:         u["nome"] = nome
     if telefone:     u["telefone"] = telefone
@@ -86,7 +86,7 @@ def remover_cliente(cid):
     log.info(f"Tentativa de remoção do cliente: {cid}")
     _carregar_clientes()
     if cid not in clientes:
-        log.warning(f"Remoção falhada — cliente não encontrado: {cid}")
+        log.error(f"Remoção falhada — cliente não encontrado: {cid}")
         return 404, "Cliente não encontrado"
     nome = clientes[cid]["nome"]
     del clientes[cid]
