@@ -28,7 +28,7 @@ def criar_carro(matricula, marca, modelo, ano, preco, kms, cor,
     log.info(f"Tentativa de criação de carro: matrícula={matricula}, marca={marca}, modelo={modelo}, stand={id_stand}, fornecedor={id_fornecedor}")
     _carregar_carros()
     if matricula in carros:
-        log.warning(f"Carro com matrícula '{matricula}' já existe no sistema")
+        log.error(f"Carro com matrícula '{matricula}' já existe no sistema")
         return 400, "Já existe um carro com essa matrícula."
     carro = {
         "matricula": matricula,
@@ -58,7 +58,7 @@ def listar_stock():
     _carregar_carros()
     disponiveis = {m: c for m, c in carros.items() if not c["id_cliente"]}
     if not disponiveis:
-        log.info("Listagem de stock: sem carros disponíveis")
+        log.error("Listagem de stock: sem carros disponíveis")
         return 404, {}
     log.info(f"Stock listado: {len(disponiveis)} carro(s) disponível(is)")
     return 200, disponiveis
@@ -68,7 +68,7 @@ def obter_carro(matricula):
     _carregar_carros()
     carro = carros.get(matricula.upper())
     if not carro:
-        log.warning(f"Carro não encontrado: {matricula}")
+        log.error(f"Carro não encontrado: {matricula}")
         return 404, "Não encontrado"
     log.debug(f"Carro encontrado: {carro['marca']} {carro['modelo']} ({matricula})")
     return 200, carro
@@ -79,7 +79,7 @@ def atualizar_carro(matricula, marca=None, modelo=None, ano=None,
     _carregar_carros()
     carro = carros.get(matricula.upper())
     if not carro:
-        log.warning(f"Atualização falhada — carro não encontrado: {matricula}")
+        log.error(f"Atualização falhada — carro não encontrado: {matricula}")
         return 404, "Carro não encontrado"
     if marca:      carro["marca"] = marca
     if modelo:     carro["modelo"] = modelo
@@ -99,10 +99,10 @@ def remover_carro(matricula):
     _carregar_carros()
     carro = carros.get(matricula.upper())
     if not carro:
-        log.warning(f"Remoção falhada — carro não encontrado: {matricula}")
+        log.error(f"Remoção falhada — carro não encontrado: {matricula}")
         return 404, "Carro não encontrado"
     if carro["id_cliente"]:
-        log.warning(f"Remoção falhada — carro {matricula} já tem dono (cliente: {carro['id_cliente']})")
+        log.error(f"Remoção falhada — carro {matricula} já tem dono (cliente: {carro['id_cliente']})")
         return 400, "Carro já tem dono"
     del carros[matricula.upper()]
     _guardar_carros()
