@@ -1,7 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# gui.py — Interface gráfica do Stand JDM usando Tkinter
-# Corre este ficheiro diretamente: python gui.py
-# ─────────────────────────────────────────────────────────────────────────────
 
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
